@@ -37,7 +37,20 @@ export class SignUpComponent {
         }
       });
     } else {
-      alert('Por favor completa el formulario correctamente');
+      const passwordControl = this.registerForm.get('password');
+
+      // Preguntamos: ¿Tiene el error de longitud mínima?
+      if (passwordControl?.hasError('minlength')) {
+        alert('La contraseña tiene que ser mayor a 6 dígitos');
+      }
+      // Preguntamos: ¿Está vacío?
+      else if (passwordControl?.hasError('required')) {
+        alert('Todos los campos son obligatorios');
+      }
+      // Cualquier otro error
+      else {
+        alert('Por favor verifica los datos del formulario');
+      }
     }
   }
 
