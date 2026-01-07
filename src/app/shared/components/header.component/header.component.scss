@@ -1,0 +1,91 @@
+@use 'sass:color';
+
+$primary: #4a00e0;
+$gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+
+  .highlight {
+    background: $gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+
+  a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+
+    &:hover, &.active {
+      color: $primary;
+    }
+  }
+
+  @media (max-width: 768px) { display: none; }
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  .btn-text {
+    text-decoration: none;
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.9rem;
+    &:hover { color: $primary; }
+  }
+
+  .btn-primary {
+    text-decoration: none;
+    background: $gradient;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(74, 0, 224, 0.2);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(74, 0, 224, 0.3);
+    }
+  }
+}

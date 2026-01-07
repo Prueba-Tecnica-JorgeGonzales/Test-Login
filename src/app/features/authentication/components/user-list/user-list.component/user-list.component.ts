@@ -49,10 +49,8 @@ export class UserListComponent implements OnInit {
   }
 
   searchUser() {
-    // 1. Convertimos a String explícitamente antes de usar trim() para evitar errores
     const term = String(this.searchId || '').trim();
 
-    // Si está vacío, recargamos todo
     if (!term) {
       this.loadUsers();
       return;
@@ -71,7 +69,6 @@ export class UserListComponent implements OnInit {
     // 3. Llamada al servicio
     this.userService.getById(id).subscribe({
       next: (user) => {
-        // OJO: Verificamos si user existe (por si el backend devuelve 200 pero body vacío)
         if (user) {
           this.users = [{ ...user, isEditing: false }];
         } else {
@@ -82,13 +79,10 @@ export class UserListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error buscando usuario:', err);
-        // Si es un 404 (No encontrado), dejamos la tabla vacía
         this.users = [];
         this.isLoading = false;
 
-        // Opcional: Avisar al usuario si es un error 404 real
         if (err.status === 404) {
-          // No hace falta alert, visualmente la tabla vacía indica que no hay resultados
           console.warn('Usuario no encontrado en BD');
         } else {
           alert('Ocurrió un error al buscar.');
