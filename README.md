@@ -1,59 +1,63 @@
-# TestLogin
+# Backend API Documentation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+En esta sección detalla la API RESTful del sistema de gestión de usaurios (Backend). Proporciona servicios para la autenticación y mantenimiento de usuarios
 
-## Development server
+## Tabla de Contenidos
+- [Requisitos Previos](#requisitos-previos)
+- [Instalación y Ejecución](#instalación-y-ejecución)
+- [Documentación de la API](#documentación-de-la-api)
+- [Swagger UI](#swagger-ui)
 
-To start a local development server, run:
+## Requisitos Previos
 
-```bash
-ng serve
-```
+Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* **Java JDK 17** o superior.
+* **Maven** (o usar el wrapper `mvnw` incluido).
+* **MySQL Database** (Asegúrate de que el servicio esté corriendo).
+* Un IDE como **IntelliJ IDEA** o **VS Code**.
 
-## Code scaffolding
+## Instalación y Ejecución
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone https://github.com/Prueba-Tecnica-JorgeGonzales/backend
+    cd <nombre-de-la-carpeta>
+    ```
 
-```bash
-ng generate component component-name
-```
+2.  **Configurar la Base de Datos:**
+    Abre el archivo `src/main/resources/application.properties` y configura tus credenciales de MySQL:
+    ```properties
+    spring.datasource.url=jdbc:mysql://localhost:(puerto)/tu_base_de_datos
+    spring.datasource.username=tu_usuario
+    spring.datasource.password=tu_contraseña
+    spring.jpa.hibernate.ddl-auto=update
+    ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3.  **Ejecutar la aplicación:**
+    Puedes ejecutar el proyecto usando Maven:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+    O desde tu IDE ejecutando la clase principal `...Application.java`.
 
-```bash
-ng generate --help
-```
+## Documentación de la API
 
-## Building
+A continuación se detallan los endpoints disponibles.
 
-To build the project run:
+| Método | Endpoint | Descripción | Swagger | Datos de Muestra / Params |
+| :--- | :--- | :--- | :---: | :--- |
+| **POST** | `/api/auth/login` | Iniciar sesión y obtener token. | http://localhost:8080/swagger-ui/index.html#/auth-controller/login | `username`: "Juan"<br>`password`: "contrasenia" |
+| **POST** | `/api/auth/sign-up` | Registrar un nuevo usuario. | http://localhost:8080/swagger-ui/index.html#/auth-controller/signUp | `username`: "Juan"<br>`email`: "Juan@gmail.com"<br>`password`: "contrasenia" |
+| **GET** | `/api/users` | Obtener lista de todos los usuarios. | http://localhost:8080/swagger-ui/index.html#/users-controller/getAllUsers | - |
+| **POST** | `/api/users` | Crear un usuario (Admin/Internal). | http://localhost:8080/swagger-ui/index.html#/users-controller/createUser | `username`: "Admin"<br>`email`: "admin@mail.com"<br>`password`: "123456" |
+| **GET** | `/api/users/{id}` | Obtener un usuario específico por ID. | http://localhost:8080/swagger-ui/index.html#/users-controller/getUserById | `id`: 1 |
+| **PUT** | `/api/users/{id}` | Actualizar datos de un usuario. | http://localhost:8080/swagger-ui/index.html#/users-controller/updateUser | `id`: 1<br>`username`: "JuanUpdate"<br>`email`: "juan@mail.com" |
+| **DELETE**| `/api/users/{id}` | Eliminar un usuario del sistema. | http://localhost:8080/swagger-ui/index.html#/users-controller/deleteUser | `id`: 1 |
 
-```bash
-ng build
-```
+## Swagger UI
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Para probar los endpoints de manera interactiva, asegúrate de que la aplicación esté en ejecución y visita:
 
-## Running unit tests
+**[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
