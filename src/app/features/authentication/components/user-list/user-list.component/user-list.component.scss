@@ -42,6 +42,8 @@ $bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #f3f4f6;
+  flex-wrap: wrap; // Permitir que baje si la pantalla es muy chica
+  gap: 1rem;
 
   .header-text {
     h2 {
@@ -59,6 +61,72 @@ $bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   .header-actions {
     display: flex;
     gap: 0.8rem;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+
+    &:focus-within {
+      background: white;
+      border-color: #4a00e0; // Color primario
+      box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.1);
+    }
+
+    input {
+      border: none;
+      background: transparent;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      outline: none;
+      width: 120px;
+      color: #374151;
+
+      &::placeholder {
+        color: #9ca3af;
+      }
+
+      /* Quitar flechas del input number */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .btn-search {
+      font-size: 1rem;
+      &:hover { background: #e5e7eb; }
+    }
+
+    .btn-clear {
+      color: #ef4444;
+      font-weight: bold;
+      font-size: 0.9rem;
+      &:hover { background: #fee2e2; }
+    }
   }
 }
 

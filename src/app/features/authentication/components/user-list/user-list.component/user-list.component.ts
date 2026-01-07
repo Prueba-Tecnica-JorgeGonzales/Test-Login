@@ -18,6 +18,7 @@ export class UserListComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
+  searchId: string = '';
 
   users: any[] = [];
   isLoading = true;
@@ -27,7 +28,6 @@ export class UserListComponent implements OnInit {
   newUserForm: FormGroup;
 
   constructor() {
-    // Inicializamos el formulario con validaciones
     this.newUserForm = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -41,21 +41,70 @@ export class UserListComponent implements OnInit {
 
   openModal() {
     this.showModal = true;
-    this.newUserForm.reset(); // Limpiamos el formulario al abrir
+    this.newUserForm.reset();
   }
 
   closeModal() {
     this.showModal = false;
   }
 
+  searchUser() {
+    // 1. Convertimos a String explícitamente antes de usar trim() para evitar errores
+    const term = String(this.searchId || '').trim();
+
+    // Si está vacío, recargamos todo
+    if (!term) {
+      this.loadUsers();
+      return;
+    }
+
+    const id = Number(term);
+
+    // 2. Validación
+    if (isNaN(id) || id <= 0) {
+      alert('Por favor ingresa un ID válido numérico');
+      return;
+    }
+
+    this.isLoading = true;
+
+    // 3. Llamada al servicio
+    this.userService.getById(id).subscribe({
+      next: (user) => {
+        // OJO: Verificamos si user existe (por si el backend devuelve 200 pero body vacío)
+        if (user) {
+          this.users = [{ ...user, isEditing: false }];
+        } else {
+          this.users = []; // Si no devuelve nada
+        }
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error buscando usuario:', err);
+        // Si es un 404 (No encontrado), dejamos la tabla vacía
+        this.users = [];
+        this.isLoading = false;
+
+        // Opcional: Avisar al usuario si es un error 404 real
+        if (err.status === 404) {
+          // No hace falta alert, visualmente la tabla vacía indica que no hay resultados
+          console.warn('Usuario no encontrado en BD');
+        } else {
+          alert('Ocurrió un error al buscar.');
+        }
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   createUser() {
     if (this.newUserForm.valid) {
-      // Reutilizamos el servicio de registro (AuthService)
       this.authService.register(this.newUserForm.value).subscribe({
         next: () => {
           alert('Usuario creado exitosamente');
           this.closeModal();
-          this.loadUsers(); // Recargamos la lista para ver al nuevo
+          this.loadUsers();
         },
         error: (err) => {
           console.error(err);

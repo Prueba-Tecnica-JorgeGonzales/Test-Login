@@ -6,12 +6,31 @@
         <p>Administra el acceso y permisos del sistema</p>
       </div>
 
-      <div class="header-actions">
-        <button (click)="logout()" class="btn btn-secondary">Cerrar Sesión</button>
+      <div class="header-controls">
 
-        <button (click)="openModal()" class="btn btn-primary">
-          + Nuevo
-        </button>
+        <div class="search-bar">
+          <input
+            type="number"
+            placeholder="Buscar por ID..."
+            [(ngModel)]="searchId"
+            (keyup.enter)="searchUser()"
+          >
+          <button class="btn-search" (click)="searchUser()" title="Buscar">
+            🔍
+          </button>
+          <button *ngIf="searchId" class="btn-clear" (click)="loadUsers()" title="Ver todos">
+            ✕
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button (click)="logout()" class="btn btn-secondary">
+            Salir
+          </button>
+          <button (click)="openModal()" class="btn btn-primary">
+            + Nuevo
+          </button>
+        </div>
       </div>
     </header>
 
@@ -79,7 +98,8 @@
 
         <tr *ngIf="users.length === 0">
           <td colspan="6" class="empty-state">
-            No hay usuarios registrados aún.
+            <span *ngIf="searchId">No se encontró ningún usuario con el ID "{{searchId}}".</span>
+            <span *ngIf="!searchId">No hay usuarios registrados aún.</span>
           </td>
         </tr>
         </tbody>
